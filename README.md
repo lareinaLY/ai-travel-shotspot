@@ -4,18 +4,18 @@ An AR-based photography assistant platform that recommends aesthetic photo spots
 
 ## Project Overview
 
-**For SDE Portfolio:**
-- Full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
-- Microservices architecture with FastAPI backend and Next.js frontend
-- GPS-based AR alignment using AR.js and WebXR
-- Intelligent itinerary generator with visual aesthetics and user clustering
-- Containerized deployment with Docker and GitHub Actions CI/CD
+**Engineering Contributions:**
+- Built a full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
+- Designed microservices architecture with FastAPI backend and Next.js frontend
+- Implemented GPS-based AR alignment using AR.js and WebXR
+- Developed itinerary generator with visual aesthetics and user clustering
+- Deployed via Docker and GitHub Actions CI/CD with AWS support
 
-**For UXE Portfolio:**
-- User research through informal interviews identifying navigation and aesthetic pain points
-- Mobile-first interface design optimized for on-the-go photography
-- Usability testing showing 42% higher engagement rate
-- Visual recommendation system enhancing user experience in location discovery
+**User Experience Contributions:**
+- Conducted informal user interviews to identify navigation and aesthetic pain points
+- Designed a mobile-first interface optimized for on-the-go photography
+- Ran usability testing showing 42% higher engagement rate compared to baseline
+- Enhanced location discovery through an interactive visual recommendation system
 
 ## Tech Stack
 
@@ -291,4 +291,4 @@ Project Link: https://github.com/lareinaLY/ai-travel-shotspot
 
 ---
 
-**Note**: This is a portfolio project demonstrating full-stack development, computer vision, AR integration, and user experience design capabilities.
+**Note**: **Note**: This project was developed as a portfolio showcase, highlighting full-stack engineering, computer vision, AR integration, and user experience design capabilities.
