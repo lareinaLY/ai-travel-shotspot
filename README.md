@@ -4,18 +4,18 @@ An AR-based photography assistant platform that recommends aesthetic photo spots
 
 ## Project Overview
 
-**Engineering Contributions:**
-- Built a full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
-- Designed microservices architecture with FastAPI backend and Next.js frontend
-- Implemented GPS-based AR alignment using AR.js and WebXR
-- Developed itinerary generator with visual aesthetics and user clustering
-- Deployed via Docker and GitHub Actions CI/CD with AWS support
+**For SDE Portfolio:**
+- Full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
+- Microservices architecture with FastAPI backend and Next.js frontend
+- GPS-based AR alignment using AR.js and WebXR
+- Intelligent itinerary generator with visual aesthetics and user clustering
+- Containerized deployment with Docker and GitHub Actions CI/CD
 
-**User Experience Contributions:**
-- Conducted informal user interviews to identify navigation and aesthetic pain points
-- Designed a mobile-first interface optimized for on-the-go photography
-- Ran usability testing showing 42% higher engagement rate compared to baseline
-- Enhanced location discovery through an interactive visual recommendation system
+**For UXE Portfolio:**
+- User research through informal interviews identifying navigation and aesthetic pain points
+- Mobile-first interface design optimized for on-the-go photography
+- Usability testing showing 42% higher engagement rate
+- Visual recommendation system enhancing user experience in location discovery
 
 ## Tech Stack
 
@@ -25,11 +25,13 @@ An AR-based photography assistant platform that recommends aesthetic photo spots
 - **AI/CV**: OpenCV, CLIP (OpenAI), YOLOv8 (Ultralytics)
 - **Image Processing**: Pillow, numpy
 
-### Frontend
-- **Framework**: Next.js 14 (React 18+)
-- **AR**: AR.js, WebXR API
-- **Styling**: Tailwind CSS
-- **Maps**: Leaflet / Mapbox
+### Frontend (iOS Native)
+- **Language**: Swift 5.9+
+- **Framework**: SwiftUI
+- **Architecture**: MVVM (Model-View-ViewModel)
+- **AR**: ARKit (iOS native AR framework)
+- **Maps**: MapKit
+- **Networking**: URLSession with async/await
 
 ### Infrastructure
 - **Containerization**: Docker, Docker Compose
@@ -79,13 +81,15 @@ ai-travel-shotspot/
 │   ├── tests/                   # Backend tests
 │   ├── requirements.txt
 │   └── Dockerfile
-├── frontend/
-│   ├── app/                     # Next.js app directory
-│   ├── components/              # React components
-│   ├── public/                  # Static assets
-│   ├── styles/                  # CSS files
-│   ├── package.json
-│   └── Dockerfile
+├── ios/
+│   └── ShotSpotFinder/          # iOS Native App
+│       ├── ShotSpotFinder.xcodeproj
+│       └── ShotSpotFinder/      # Source code
+│           ├── Models/          # Data models
+│           ├── Views/           # SwiftUI views
+│           ├── ViewModels/      # MVVM view models
+│           ├── Services/        # API services
+│           └── Utilities/       # Helper functions
 ├── data/                        # Image dataset (gitignored)
 ├── models/                      # Trained model weights
 ├── docker-compose.yml
@@ -99,9 +103,9 @@ ai-travel-shotspot/
 
 ### Prerequisites
 - Python 3.11+
-- Node.js 18+
 - PostgreSQL 14+
-- Docker & Docker Compose
+- **macOS** (for iOS development)
+- **Xcode 15+** with iOS SDK
 - Git
 
 ### Backend Setup
@@ -123,7 +127,7 @@ pip install -r requirements.txt
 3. **Configure environment variables**
 ```bash
 cp .env.example .env
-# Edit .env with your database credentials and API keys
+# Edit .env with your database credentials
 ```
 
 4. **Initialize database**
@@ -132,7 +136,7 @@ cp .env.example .env
 createdb shotspot_db
 
 # Run migrations (to be implemented)
-python -m alembic upgrade head
+# python -m alembic upgrade head
 ```
 
 5. **Start backend server**
@@ -143,42 +147,31 @@ uvicorn app.main:app --reload --port 8002
 Backend will be available at `http://localhost:8002`
 API documentation at `http://localhost:8002/docs`
 
-### Frontend Setup
+### iOS Setup
 
-1. **Install dependencies**
+1. **Install Xcode**
+   - Download from Mac App Store
+   - Install iOS Simulator components
+
+2. **Open iOS project**
 ```bash
-cd frontend
-npm install
+cd ios/ShotSpotFinder
+open ShotSpotFinder.xcodeproj
 ```
 
-2. **Configure environment**
-```bash
-cp .env.local.example .env.local
-# Add your API URLs and keys
-```
+3. **Configure backend URL**
+   - The app is pre-configured to connect to `http://localhost:8002`
+   - Ensure backend is running before testing
 
-3. **Start development server**
-```bash
-npm run dev
-```
+4. **Run on simulator**
+   - Select target device (e.g., iPhone 15 Pro)
+   - Click ▶️ Run button or press `Cmd + R`
+   - App will launch in iOS Simulator
 
-Frontend will be available at `http://localhost:3000`
-
-### Docker Setup (Recommended)
-
-```bash
-# Build and start all services
-docker-compose up --build
-
-# Run in detached mode
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
+5. **Test on physical device** (optional)
+   - Connect iPhone via USB
+   - Select your device in Xcode
+   - May require Apple Developer account for signing
 
 ## Development Workflow
 
@@ -282,13 +275,13 @@ npm run test:e2e
 
 ## License
 
-not yet
+MIT License - see LICENSE file for details
 
 ## Contact
 
-Ying Lu - Lu.Y7@northeastern.edu
-Project Link: https://github.com/lareinaLY/ai-travel-shotspot
+lu.y7@northeastern.edu
+Linkedin Link: https://www.linkedin.com/in/yinglulareina/
 
 ---
 
-**Note**: **Note**: This project was developed as a portfolio showcase, highlighting full-stack engineering, computer vision, AR integration, and user experience design capabilities.
+**Note**: This is a portfolio project demonstrating full-stack development, computer vision, AR integration, and user experience design capabilities.
