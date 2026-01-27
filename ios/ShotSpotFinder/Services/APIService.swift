@@ -11,26 +11,48 @@ class APIService {
     
     private init() {}
     
-    // MARK: - Fetch All Spots
-    func fetchPhotoSpots(page: Int = 1, limit: Int = 20) async throws -> PhotoSpotListResponse {
-        // Build URL with query parameters
+    // MARK: - Fetch All Spots (with search and filters)
+    func fetchPhotoSpots(
+        page: Int = 1,
+        limit: Int = 20,
+        search: String? = nil,
+        city: String? = nil,
+        category: String? = nil,
+        country: String? = nil
+    ) async throws -> PhotoSpotListResponse {
         guard var components = URLComponents(string: "\(baseURL)/spots") else {
             throw APIError.invalidURL
         }
         
-        components.queryItems = [
+        var queryItems = [
             URLQueryItem(name: "skip", value: String((page - 1) * limit)),
             URLQueryItem(name: "limit", value: String(limit))
         ]
+        
+        // Add search parameter (searches name, city, country)
+        if let search = search, !search.isEmpty {
+            queryItems.append(URLQueryItem(name: "search", value: search))
+        }
+        
+        // Add specific filter parameters if provided
+        if let city = city, !city.isEmpty {
+            queryItems.append(URLQueryItem(name: "city", value: city))
+        }
+        if let category = category, !category.isEmpty {
+            queryItems.append(URLQueryItem(name: "category", value: category))
+        }
+        if let country = country, !country.isEmpty {
+            queryItems.append(URLQueryItem(name: "country", value: country))
+        }
+        
+        components.queryItems = queryItems
         
         guard let url = components.url else {
             throw APIError.invalidURL
         }
         
-        // Make request
         let (data, response) = try await URLSession.shared.data(from: url)
         
-        // Check response status
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
         }
@@ -39,7 +61,6 @@ class APIService {
             throw APIError.httpError(statusCode: httpResponse.statusCode)
         }
         
-        // Decode JSON
         let decoder = JSONDecoder()
         let spotResponse = try decoder.decode(PhotoSpotListResponse.self, from: data)
         
