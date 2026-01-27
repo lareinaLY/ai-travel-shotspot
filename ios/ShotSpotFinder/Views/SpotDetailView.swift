@@ -46,6 +46,17 @@ struct SpotDetailView: View {
             }
             .padding()
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: ARNavigationView(spot: spot)) {
+                    HStack {
+                        Image(systemName: "arkit")
+                        Text("AR Navigate")
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+        }
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
     }

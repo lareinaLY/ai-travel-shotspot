@@ -2,14 +2,26 @@ import Foundation
 
 // MARK: - API Service
 // Handles all network requests to FastAPI backend
+// Auto-detects simulator vs real device for URL configuration
 class APIService {
     // MARK: - Singleton
     static let shared = APIService()
     
-    // Backend URL - change this if your backend runs on different port
-    private let baseURL = "http://localhost:8002/api"
+    // Auto-detect base URL based on device type
+    private var baseURL: String {
+        #if targetEnvironment(simulator)
+        // Running on iOS Simulator - use localhost
+        return "http://localhost:8002/api"
+        #else
+        // Running on real iPhone - use Mac's Bonjour hostname
+        return "http://JFHNWJJXGX.local:8002/api"
+        #endif
+    }
     
-    private init() {}
+    private init() {
+        // Print base URL for debugging
+        print("🌐 API Base URL: \(baseURL)")
+    }
     
     // MARK: - Fetch All Spots (with search and filters)
     func fetchPhotoSpots(
@@ -51,6 +63,8 @@ class APIService {
             throw APIError.invalidURL
         }
         
+        print("📡 Fetching spots: \(url)")
+        
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -73,6 +87,8 @@ class APIService {
             throw APIError.invalidURL
         }
         
+        print("📡 Fetching spot \(id): \(url)")
+        
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -90,7 +106,12 @@ class APIService {
     }
     
     // MARK: - Search Nearby Spots
-    func fetchNearbySpots(latitude: Double, longitude: Double, radiusKm: Double = 10, limit: Int = 10) async throws -> [PhotoSpot] {
+    func fetchNearbySpots(
+        latitude: Double,
+        longitude: Double,
+        radiusKm: Double = 10,
+        limit: Int = 10
+    ) async throws -> [PhotoSpot] {
         guard var components = URLComponents(string: "\(baseURL)/spots/nearby") else {
             throw APIError.invalidURL
         }
@@ -105,6 +126,8 @@ class APIService {
         guard let url = components.url else {
             throw APIError.invalidURL
         }
+        
+        print("📡 Fetching nearby spots: \(url)")
         
         let (data, response) = try await URLSession.shared.data(from: url)
         

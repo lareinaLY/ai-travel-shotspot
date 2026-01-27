@@ -1,21 +1,21 @@
 # AI Travel ShotSpot Finder
 
-An AR-based photography assistant platform that recommends aesthetic photo spots and provides real-time AR guidance for travelers.
+An AR-based photography assistant platform that recommends aesthetic photo spots and provides real-time AR guidance for travelers. Built with iOS native app and FastAPI backend.
 
 ## Project Overview
 
-**For SDE Portfolio:**
-- Full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
-- Microservices architecture with FastAPI backend and Next.js frontend
-- GPS-based AR alignment using AR.js and WebXR
-- Intelligent itinerary generator with visual aesthetics and user clustering
-- Containerized deployment with Docker and GitHub Actions CI/CD
+**Engineering Contributions:**
+- Built a full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
+- Designed microservices architecture with FastAPI backend and iOS native frontend
+- Implemented GPS-based AR alignment using ARKit for real-time navigation
+- Developed intelligent itinerary generator with visual aesthetics and user clustering
+- Deployed via Docker and GitHub Actions CI/CD with AWS support
 
-**For UXE Portfolio:**
-- User research through informal interviews identifying navigation and aesthetic pain points
-- Mobile-first interface design optimized for on-the-go photography
-- Usability testing showing 42% higher engagement rate
-- Visual recommendation system enhancing user experience in location discovery
+**User Experience Contributions:**
+- Conducted informal user interviews to identify navigation and aesthetic pain points
+- Designed a mobile-first native iOS interface optimized for on-the-go photography
+- Ran usability testing showing 42% higher engagement rate compared to baseline
+- Enhanced location discovery through an interactive visual recommendation system with AR guidance
 
 ## Tech Stack
 
@@ -213,9 +213,9 @@ open ShotSpotFinder.xcodeproj
 
 ## User Research & Testing
 
-### User Interviews (UXE Component)
+### User Interviews
 - Conducted informal interviews with 15 travelers (ages 22-45)
-- Identified pain points:
+- Identified key pain points:
   - Difficulty finding Instagram-worthy spots in new cities
   - Navigation challenges to specific photo locations
   - Uncertainty about optimal shooting times/angles
@@ -225,7 +225,7 @@ open ShotSpotFinder.xcodeproj
 - 42% higher engagement rate compared to traditional map-based discovery
 - Average session duration increased by 3.2 minutes
 - 87% of users found AR guidance helpful or very helpful
-- Mobile-first design improved task completion by 35%
+- Mobile-first native design improved task completion by 35%
 
 ## API Documentation
 

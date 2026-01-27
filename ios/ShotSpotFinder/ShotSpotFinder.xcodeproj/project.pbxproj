@@ -21,6 +21,8 @@
 		2BBDFE672F2865680045766E /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE662F2865650045766E /* HomeViewModel.swift */; };
 		2BBDFE692F2865990045766E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE682F2865940045766E /* HomeView.swift */; };
 		2BBDFE6B2F2866BE0045766E /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE6A2F2866B60045766E /* SearchView.swift */; };
+		2BBDFE6F2F286CA70045766E /* ARViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE6E2F286CA40045766E /* ARViewModel.swift */; };
+		2BBDFE712F286CCB0045766E /* ARNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE702F286CC80045766E /* ARNavigationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		2BBDFE662F2865650045766E /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2BBDFE682F2865940045766E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		2BBDFE6A2F2866B60045766E /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		2BBDFE6E2F286CA40045766E /* ARViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewModel.swift; sourceTree = "<group>"; };
+		2BBDFE702F286CC80045766E /* ARNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARNavigationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,7 @@
 		2BBDFE472F2846770045766E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2BBDFE702F286CC80045766E /* ARNavigationView.swift */,
 				2BBDFE6A2F2866B60045766E /* SearchView.swift */,
 				2BBDFE682F2865940045766E /* HomeView.swift */,
 				2BBDFE642F28652A0045766E /* SplashView.swift */,
@@ -93,6 +98,7 @@
 		2BBDFE482F2846920045766E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				2BBDFE6E2F286CA40045766E /* ARViewModel.swift */,
 				2BBDFE662F2865650045766E /* HomeViewModel.swift */,
 				2BBDFE602F285E540045766E /* MapViewModel.swift */,
 				2BBDFE562F284AD50045766E /* SpotListViewModel.swift */,
@@ -194,6 +200,8 @@
 				2BBDFE4F2F2846CF0045766E /* ContentView.swift in Sources */,
 				2BBDFE5F2F285B210045766E /* SpotDetailView.swift in Sources */,
 				2BBDFE5B2F284C830045766E /* PhotoSpot.swift in Sources */,
+				2BBDFE6F2F286CA70045766E /* ARViewModel.swift in Sources */,
+				2BBDFE712F286CCB0045766E /* ARNavigationView.swift in Sources */,
 				2BBDFE502F2846CF0045766E /* ShotSpotFinderApp.swift in Sources */,
 				2BBDFE6B2F2866BE0045766E /* SearchView.swift in Sources */,
 				2BBDFE652F28653D0045766E /* SplashView.swift in Sources */,
@@ -332,9 +340,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6AWJTB7P77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ShotSpotFinder-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access for AR navigation to photo spots";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location for AR navigation";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to guide you to photo spots";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -364,9 +376,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6AWJTB7P77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ShotSpotFinder-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access for AR navigation to photo spots";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location for AR navigation";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to guide you to photo spots";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
