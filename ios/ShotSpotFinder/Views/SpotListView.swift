@@ -53,7 +53,9 @@ struct SpotListView: View {
                 } else {
                     // List of spots
                     List(viewModel.spots) { spot in
-                        SpotRowView(spot: spot)
+                        NavigationLink(destination: SpotDetailView(spot: spot)) {
+                                SpotRowView(spot: spot)
+                            }
                     }
                     .refreshable {
                         await viewModel.refresh()

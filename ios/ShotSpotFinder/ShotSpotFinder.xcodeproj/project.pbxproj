@@ -14,6 +14,9 @@
 		2BBDFE592F284C6F0045766E /* SpotListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE562F284AD50045766E /* SpotListViewModel.swift */; };
 		2BBDFE5A2F284C790045766E /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE532F2848FA0045766E /* APIService.swift */; };
 		2BBDFE5B2F284C830045766E /* PhotoSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE522F2847080045766E /* PhotoSpot.swift */; };
+		2BBDFE5F2F285B210045766E /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE5E2F285B210045766E /* SpotDetailView.swift */; };
+		2BBDFE612F285E600045766E /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE602F285E540045766E /* MapViewModel.swift */; };
+		2BBDFE632F285E830045766E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBDFE622F285E7D0045766E /* MapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		2BBDFE552F284A450045766E /* ShotSpotFinder-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ShotSpotFinder-Info.plist"; sourceTree = "<group>"; };
 		2BBDFE562F284AD50045766E /* SpotListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListViewModel.swift; sourceTree = "<group>"; };
 		2BBDFE572F284B120045766E /* SpotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotListView.swift; sourceTree = "<group>"; };
+		2BBDFE5E2F285B210045766E /* SpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
+		2BBDFE602F285E540045766E /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		2BBDFE622F285E7D0045766E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +72,9 @@
 		2BBDFE472F2846770045766E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2BBDFE622F285E7D0045766E /* MapView.swift */,
 				2BBDFE572F284B120045766E /* SpotListView.swift */,
+				2BBDFE5E2F285B210045766E /* SpotDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -74,6 +82,7 @@
 		2BBDFE482F2846920045766E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				2BBDFE602F285E540045766E /* MapViewModel.swift */,
 				2BBDFE562F284AD50045766E /* SpotListViewModel.swift */,
 			);
 			path = ViewModels;
@@ -170,8 +179,11 @@
 				2BBDFE5A2F284C790045766E /* APIService.swift in Sources */,
 				2BBDFE582F284C5F0045766E /* SpotListView.swift in Sources */,
 				2BBDFE4F2F2846CF0045766E /* ContentView.swift in Sources */,
+				2BBDFE5F2F285B210045766E /* SpotDetailView.swift in Sources */,
 				2BBDFE5B2F284C830045766E /* PhotoSpot.swift in Sources */,
 				2BBDFE502F2846CF0045766E /* ShotSpotFinderApp.swift in Sources */,
+				2BBDFE632F285E830045766E /* MapView.swift in Sources */,
+				2BBDFE612F285E600045766E /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

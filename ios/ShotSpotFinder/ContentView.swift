@@ -2,8 +2,19 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        // Main app entry - shows the spot list
-        SpotListView()
+        TabView {
+            // List tab
+            SpotListView()
+                .tabItem {
+                    Label("List", systemImage: "list.bullet")
+                }
+            
+            // Map tab
+            MapView()
+                .tabItem {
+                    Label("Map", systemImage: "map.fill")
+                }
+        }
     }
 }
 
