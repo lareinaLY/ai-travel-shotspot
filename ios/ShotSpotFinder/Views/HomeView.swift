@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Home View
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     
@@ -8,23 +7,27 @@ struct HomeView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Search bar
                     searchBar
-                    
-                    // Hot spots section
                     hotSpotsSection
                 }
                 .padding()
             }
             .navigationTitle("Discover")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: UploadSpotView()) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title3)
+                    }
+                }
+            }
         }
         .task {
             await viewModel.loadHotSpots()
         }
     }
     
-    // MARK: - Search Bar
     private var searchBar: some View {
         NavigationLink(destination: SearchView()) {
             HStack {
@@ -43,10 +46,8 @@ struct HomeView: View {
         .buttonStyle(PlainButtonStyle())
     }
     
-    // MARK: - Hot Spots Section
     private var hotSpotsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Section header
             HStack {
                 Image(systemName: "flame.fill")
                     .foregroundColor(.orange)
@@ -63,7 +64,6 @@ struct HomeView: View {
                 }
             }
             
-            // Hot spots list
             if viewModel.isLoading {
                 ProgressView()
                     .frame(maxWidth: .infinity)
@@ -115,14 +115,12 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Hot Spot Card
 struct HotSpotCard: View {
     let spot: PhotoSpot
     let rank: Int
     
     var body: some View {
         HStack(spacing: 12) {
-            // Rank badge
             ZStack {
                 Circle()
                     .fill(rankColor)
@@ -134,16 +132,40 @@ struct HotSpotCard: View {
                     .foregroundColor(.white)
             }
             
-            // Thumbnail
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.gray.opacity(0.2))
-                .frame(width: 60, height: 60)
-                .overlay {
-                    Image(systemName: "camera.fill")
-                        .foregroundColor(.gray)
+            Group {
+                if let imageUrl = spot.thumbnailUrl ?? spot.imageUrl {
+                    AsyncImage(url: URL(string: imageUrl)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 60, height: 60)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 60, height: 60)
+                                .clipped()
+                        case .failure:
+                            Image(systemName: "photo")
+                                .foregroundColor(.gray)
+                                .frame(width: 60, height: 60)
+                                .background(Color.gray.opacity(0.2))
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                    .cornerRadius(8)
+                } else {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(width: 60, height: 60)
+                        .overlay {
+                            Image(systemName: "camera.fill")
+                                .foregroundColor(.gray)
+                        }
                 }
+            }
             
-            // Info
             VStack(alignment: .leading, spacing: 4) {
                 Text(spot.name)
                     .font(.headline)

@@ -8,6 +8,10 @@ class APIService {
     static let shared = APIService()
     
     // Auto-detect base URL based on device type
+    func getBaseURL() -> String {
+        return baseURL
+    }
+
     private var baseURL: String {
         #if targetEnvironment(simulator)
         // Running on iOS Simulator - use localhost

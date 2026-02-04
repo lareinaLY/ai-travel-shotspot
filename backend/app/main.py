@@ -5,8 +5,10 @@ Provides REST API endpoints for photo spot recommendations and AR guidance.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import logging
+import os
 
 from app.database import engine, Base
 
@@ -49,7 +51,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",  # Next.js development
+        "http://localhost:3000",
         "http://localhost:3001",
     ],
     allow_credentials=True,
@@ -62,9 +64,6 @@ app.add_middleware(
 async def root():
     """
     Root endpoint providing API information.
-
-    Returns:
-        dict: Basic API information and health status
     """
     return {
         "message": "AI Travel ShotSpot Finder API",
@@ -78,9 +77,6 @@ async def root():
 async def health_check():
     """
     Health check endpoint for monitoring and load balancers.
-
-    Returns:
-        dict: Service health status
     """
     return {
         "status": "healthy",
@@ -89,10 +85,29 @@ async def health_check():
 
 
 # API route imports
-from app.api import spots
+from app.api import spots, upload
 
-# Register routers
+# Register routers - IMPORTANT: Keep /api/spots for spots router
 app.include_router(spots.router, prefix="/api/spots", tags=["Photo Spots"])
+app.include_router(upload.router, prefix="/api", tags=["Upload"])
+
+# Mount static files for uploaded photos
+if os.path.exists("uploads/photos"):
+    app.mount("/uploads/photos", StaticFiles(directory="uploads/photos"), name="photos")
+    logger.info("Static files mounted at /uploads/photos")
+else:
+    logger.warning("uploads/photos directory does not exist, creating it...")
+    os.makedirs("uploads/photos", exist_ok=True)
+    app.mount("/uploads/photos", StaticFiles(directory="uploads/photos"), name="photos")
+
+# Mount thumbnails directory
+if os.path.exists("uploads/thumbnails"):
+    app.mount("/uploads/thumbnails", StaticFiles(directory="uploads/thumbnails"), name="thumbnails")
+    logger.info("Static files mounted at /uploads/thumbnails")
+else:
+    logger.warning("uploads/thumbnails directory does not exist, creating it...")
+    os.makedirs("uploads/thumbnails", exist_ok=True)
+    app.mount("/uploads/thumbnails", StaticFiles(directory="uploads/thumbnails"), name="thumbnails")
 
 # Additional routers will be added in future phases:
 # app.include_router(recommendations.router, prefix="/api/recommendations", tags=["Recommendations"])

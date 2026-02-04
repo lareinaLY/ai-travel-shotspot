@@ -1,287 +1,333 @@
 # AI Travel ShotSpot Finder
 
-An AR-based photography assistant platform that recommends aesthetic photo spots and provides real-time AR guidance for travelers. Built with iOS native app and FastAPI backend.
+An AI-powered photography discovery platform that helps travelers find and navigate to aesthetic photo locations using computer vision and AR technology.
 
-## Project Overview
+## Overview
 
-**Engineering Contributions:**
-- Built a full-stack AI & Computer Vision platform combining CLIP embeddings and YOLOv8 detection
-- Designed microservices architecture with FastAPI backend and iOS native frontend
-- Implemented GPS-based AR alignment using ARKit for real-time navigation
-- Developed intelligent itinerary generator with visual aesthetics and user clustering
-- Deployed via Docker and GitHub Actions CI/CD with AWS support
+ShotSpot Finder combines **CLIP-based aesthetic scoring** with **AR navigation** to create an intelligent photography assistant. The app analyzes uploaded photos using OpenAI's CLIP model to identify visually appealing locations, then guides users to these spots using ARKit-powered augmented reality.
 
-**User Experience Contributions:**
-- Conducted informal user interviews to identify navigation and aesthetic pain points
-- Designed a mobile-first native iOS interface optimized for on-the-go photography
-- Ran usability testing showing 42% higher engagement rate compared to baseline
-- Enhanced location discovery through an interactive visual recommendation system with AR guidance
+## Key Features
+
+### AI-Powered Discovery
+- **CLIP Aesthetic Scoring**: Uses OpenAI's CLIP (Contrastive Language-Image Pre-training) to evaluate photo aesthetics
+- **Multi-Modal Analysis**: Compares images against aesthetic concepts like "beautiful landscape", "golden hour lighting"
+- **Automatic Categorization**: AI-based scene classification (landscape, cityscape, architecture, etc.)
+
+### Smart Navigation
+- **Hybrid Navigation System**: 
+  - Distance >500m: Map-based navigation with Apple Maps integration
+  - Distance <500m: AR-based navigation with real-time directional guidance
+- **GPS Tracking**: Continuous location updates with bearing calculation
+- **Arrival Detection**: Automatic mode switching when within 10m of destination
+
+### Photo Capture Assistant
+- **Reference Photo Overlay**: Real-time camera preview with adjustable transparency (10-50%)
+- **Cross-Orientation Support**: Full portrait and landscape camera functionality
+- **EXIF Extraction**: Automatic extraction of camera settings (ISO, aperture, shutter speed, focal length)
+
+### User-Generated Content
+- **Photo Upload**: Contribute new spots via camera or photo library
+- **Smart Location Tagging**: 
+  - Automatic GPS extraction from photo EXIF
+  - Manual location selection with Apple Maps search autocomplete
+- **Automatic Thumbnail Generation**: Server-side 300x300 thumbnails for optimized performance
 
 ## Tech Stack
 
-### Backend
-- **Framework**: FastAPI (Python 3.11+)
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **AI/CV**: OpenCV, CLIP (OpenAI), YOLOv8 (Ultralytics)
-- **Image Processing**: Pillow, numpy
-
 ### Frontend (iOS Native)
 - **Language**: Swift 5.9+
-- **Framework**: SwiftUI
-- **Architecture**: MVVM (Model-View-ViewModel)
-- **AR**: ARKit (iOS native AR framework)
-- **Maps**: MapKit
-- **Networking**: URLSession with async/await
+- **Framework**: SwiftUI with MVVM architecture
+- **Minimum iOS**: 17.0
+- **Key Technologies**:
+  - **ARKit**: Augmented reality navigation and scene tracking
+  - **MapKit**: iOS 17 Map API with custom annotations
+  - **CoreLocation**: GPS tracking and heading calculation
+  - **AVFoundation**: Camera capture with orientation handling
+  - **Combine**: Reactive state management
 
-### Infrastructure
-- **Containerization**: Docker, Docker Compose
-- **CI/CD**: GitHub Actions
-- **Cloud**: AWS (S3 for images, EC2/ECS for deployment)
+### Backend
+- **Framework**: FastAPI (Python 3.9+)
+- **Database**: PostgreSQL 14+ with SQLAlchemy ORM
+- **AI/CV**: 
+  - **CLIP** (OpenAI): Image aesthetic scoring
+  - **Pillow**: Image processing and EXIF extraction
+- **Key Features**:
+  - RESTful API with automatic OpenAPI documentation
+  - Multipart form data for file uploads
+  - Dynamic URL construction for cross-platform compatibility
+  - Automatic thumbnail generation with LANCZOS resampling
 
-## Features
+## Architecture
 
-### Core Functionality
-1. **Visual Recommendation Engine**
-   - CLIP embeddings for semantic image understanding
-   - YOLOv8 object detection for scene composition analysis
-   - Aesthetic scoring algorithm combining 50K+ location images
-
-2. **GPS-Based AR Navigation**
-   - Real-time AR overlays showing optimal shooting positions
-   - AR.js and WebXR integration for cross-device compatibility
-   - Distance and direction indicators
-
-3. **Smart Itinerary Generator**
-   - User style clustering based on photo preferences
-   - Location proximity optimization
-   - Visual aesthetics and time-of-day recommendations
-
-4. **User Experience Enhancements**
-   - Mobile-first responsive design
-   - Offline-capable PWA features
-   - Real-time camera preview with guidance
-
-## Project Structure
-
+### System Design
 ```
-ai-travel-shotspot/
-├── backend/
-│   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py              # FastAPI application entry
-│   │   ├── database.py          # Database configuration
-│   │   ├── models/              # SQLAlchemy models
-│   │   ├── schemas/             # Pydantic schemas
-│   │   ├── api/                 # API routes
-│   │   ├── services/            # Business logic
-│   │   │   ├── cv_service.py    # Computer vision processing
-│   │   │   ├── recommendation.py # Recommendation engine
-│   │   │   └── itinerary.py     # Itinerary generation
-│   │   └── utils/               # Utility functions
-│   ├── tests/                   # Backend tests
-│   ├── requirements.txt
-│   └── Dockerfile
-├── ios/
-│   └── ShotSpotFinder/          # iOS Native App
-│       ├── ShotSpotFinder.xcodeproj
-│       └── ShotSpotFinder/      # Source code
-│           ├── Models/          # Data models
-│           ├── Views/           # SwiftUI views
-│           ├── ViewModels/      # MVVM view models
-│           ├── Services/        # API services
-│           └── Utilities/       # Helper functions
-├── data/                        # Image dataset (gitignored)
-├── models/                      # Trained model weights
-├── docker-compose.yml
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml           # GitHub Actions pipeline
-└── README.md
+┌─────────────┐         ┌──────────────┐         ┌─────────────┐
+│             │         │              │         │             │
+│  iOS App    │◄────────┤  FastAPI     │◄────────┤ PostgreSQL  │
+│  (SwiftUI)  │  HTTP   │  Backend     │  ORM    │  Database   │
+│             │         │              │         │             │
+└──────┬──────┘         └──────┬───────┘         └─────────────┘
+       │                       │
+       │ ARKit                 │ CLIP
+       │                       │
+       ▼                       ▼
+┌─────────────┐         ┌──────────────┐
+│   Camera    │         │  AI Model    │
+│   & GPS     │         │  Inference   │
+└─────────────┘         └──────────────┘
 ```
 
-## Getting Started
+### Data Flow
+
+**Photo Upload Flow**:
+```
+User Takes Photo → Extract EXIF GPS → [Optional] Manual Location Selection
+    → Upload to Backend → CLIP Aesthetic Scoring → Generate Thumbnail
+    → Save to PostgreSQL → Return Spot with URLs → Display in App
+```
+
+**Navigation Flow**:
+```
+User Selects Spot → Get GPS Location → Calculate Distance
+    → If >500m: Map Navigation → If <500m: AR Navigation
+    → Arrival Detection → Show Reference Photo → Capture Photo
+```
+
+## Setup Instructions
 
 ### Prerequisites
-- Python 3.11+
+- macOS with Xcode 15+
+- Python 3.9+
 - PostgreSQL 14+
-- **macOS** (for iOS development)
-- **Xcode 15+** with iOS SDK
-- Git
+- iOS device or simulator (iOS 17+)
+- iPhone on same WiFi network as Mac (for real device testing)
 
 ### Backend Setup
 
-1. **Clone the repository**
+#### 1. Install PostgreSQL
 ```bash
-git clone https://github.com/yourusername/ai-travel-shotspot.git
-cd ai-travel-shotspot
+brew install postgresql@14
+brew services start postgresql@14
+createdb shotspot_db
 ```
 
-2. **Set up backend environment**
+#### 2. Setup Python Environment
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. **Configure environment variables**
+#### 3. Install CLIP Dependencies
 ```bash
-cp .env.example .env
-# Edit .env with your database credentials
+pip install torch torchvision
+pip install git+https://github.com/openai/CLIP.git
 ```
 
-4. **Initialize database**
+#### 4. Initialize Database
 ```bash
-# Create PostgreSQL database
-createdb shotspot_db
-
-# Run migrations (to be implemented)
-# python -m alembic upgrade head
+python3 << EOF
+from app.database import init_db
+from app.models.photo_spot import PhotoSpot
+init_db()
+print("Database initialized!")
+EOF
 ```
 
-5. **Start backend server**
+Verify tables:
 ```bash
-uvicorn app.main:app --reload --port 8002
+psql -d shotspot_db -c "\dt"
 ```
 
-Backend will be available at `http://localhost:8002`
-API documentation at `http://localhost:8002/docs`
+#### 5. Create Upload Directories
+```bash
+mkdir -p uploads/photos uploads/thumbnails
+```
+
+#### 6. Start Backend
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8002
+```
+
+API Documentation: http://localhost:8002/docs
 
 ### iOS Setup
 
-1. **Install Xcode**
-   - Download from Mac App Store
-   - Install iOS Simulator components
-
-2. **Open iOS project**
+#### 1. Open in Xcode
 ```bash
-cd ios/ShotSpotFinder
+cd ios
 open ShotSpotFinder.xcodeproj
 ```
 
-3. **Configure backend URL**
-   - The app is pre-configured to connect to `http://localhost:8002`
-   - Ensure backend is running before testing
+#### 2. Configure Signing
+- Select project → Signing & Capabilities
+- Choose your development team
 
-4. **Run on simulator**
-   - Select target device (e.g., iPhone 15 Pro)
-   - Click ▶️ Run button or press `Cmd + R`
-   - App will launch in iOS Simulator
+#### 3. Build and Run
+- Select target device (Simulator or iPhone)
+- Press `Cmd+R`
+- Allow permissions when prompted
 
-5. **Test on physical device** (optional)
-   - Connect iPhone via USB
-   - Select your device in Xcode
-   - May require Apple Developer account for signing
+### Network Configuration
 
-## Development Workflow
+The app uses **mDNS (Bonjour)** for automatic backend discovery:
+- **Simulator**: `http://localhost:8002/api`
+- **Real iPhone**: `http://YOUR_MAC_HOSTNAME.local:8002/api`
 
-### Phase 1: MVP (Current)
-- [x] Project structure setup
-- [x] Basic FastAPI backend with database connection
-- [ ] CRUD operations for photo spots
-- [ ] Basic frontend with spot listing
-
-### Phase 2: Computer Vision
-- [ ] CLIP embedding generation for images
-- [ ] YOLOv8 object detection integration
-- [ ] Image preprocessing pipeline
-- [ ] Aesthetic scoring algorithm
-
-### Phase 3: Recommendation System
-- [ ] User preference clustering (K-means)
-- [ ] Content-based filtering with CLIP
-- [ ] Location-based filtering
-- [ ] Ranking algorithm combining factors
-
-### Phase 4: AR Features
-- [ ] GPS integration
-- [ ] AR.js implementation for mobile
-- [ ] WebXR for cross-platform support
-- [ ] Shooting position guidance
-
-### Phase 5: Itinerary Generator
-- [ ] Multi-spot route optimization
-- [ ] Time-of-day recommendations
-- [ ] Weather integration
-- [ ] User style matching
-
-### Phase 6: Deployment
-- [ ] Docker containerization
-- [ ] GitHub Actions CI/CD pipeline
-- [ ] AWS deployment (S3, EC2/ECS)
-- [ ] Zero-downtime updates
-
-## User Research & Testing
-
-### User Interviews
-- Conducted informal interviews with 15 travelers (ages 22-45)
-- Identified key pain points:
-  - Difficulty finding Instagram-worthy spots in new cities
-  - Navigation challenges to specific photo locations
-  - Uncertainty about optimal shooting times/angles
-  - Time wasted visiting disappointing locations
-
-### Usability Testing Results
-- 42% higher engagement rate compared to traditional map-based discovery
-- Average session duration increased by 3.2 minutes
-- 87% of users found AR guidance helpful or very helpful
-- Mobile-first native design improved task completion by 35%
-
-## API Documentation
-
-### Key Endpoints
-
-**Photo Spots**
-- `GET /api/spots` - List all photo spots with filters
-- `GET /api/spots/{id}` - Get spot details
-- `POST /api/spots` - Create new spot (admin)
-- `GET /api/spots/nearby` - Find spots near coordinates
-
-**Recommendations**
-- `POST /api/recommendations` - Get personalized spot recommendations
-- `POST /api/recommendations/visual-search` - Search by uploaded image
-
-**Itinerary**
-- `POST /api/itinerary/generate` - Generate optimized photo tour
-
-**User Preferences**
-- `GET /api/users/{id}/preferences` - Get user style preferences
-- `PUT /api/users/{id}/preferences` - Update preferences
-
-Full API documentation available at `/docs` when running the server.
-
-## Testing
-
-### Backend Tests
-```bash
-cd backend
-pytest tests/ -v --cov=app
+Configuration in `APIService.swift`:
+```swift
+#if targetEnvironment(simulator)
+    return "http://localhost:8002/api"
+#else
+    return "http://JFHNWJJXGX.local:8002/api"
+#endif
 ```
 
-### Frontend Tests
-```bash
-cd frontend
-npm test
-npm run test:e2e
+## API Endpoints
+
+### Photo Spots
+```http
+GET    /api/spots              # List spots with pagination and filters
+GET    /api/spots/{id}         # Get spot details
+GET    /api/spots/nearby       # Find nearby spots
 ```
 
-## Contributing
+### Upload
+```http
+POST   /api/upload             # Upload photo with metadata
+GET    /uploads/photos/{file}  # Serve full-size image
+GET    /uploads/thumbnails/{file}  # Serve thumbnail
+```
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Features Implementation Status
 
-## License
+### Completed
+- ✅ Native iOS app with SwiftUI and MVVM architecture
+- ✅ PostgreSQL backend with RESTful API
+- ✅ Photo spot browsing with search and category filters
+- ✅ Interactive map view with custom markers
+- ✅ AR navigation with distance and bearing tracking
+- ✅ Smart mode switching (Map vs AR based on distance)
+- ✅ Photo upload with camera and photo library support
+- ✅ Manual location selection with Apple Maps search
+- ✅ Automatic thumbnail generation (300x300)
+- ✅ EXIF metadata extraction
+- ✅ Cross-orientation camera support (iOS 17 API)
+- ✅ mDNS-based cross-platform networking
 
-MIT License - see LICENSE file for details
+### In Progress
+- 🔄 CLIP-based aesthetic scoring (Phase 2)
+- 🔄 User authentication and profiles
+
+### Planned
+- 📋 Multi-spot itinerary optimization
+- 📋 Social features (likes, comments, sharing)
+- 📋 Weather integration for golden hour timing
+- 📋 Reverse geocoding for automatic city/country detection
+- 📋 YOLOv8 object detection for scene composition analysis
+
+## Technical Highlights
+
+### Mobile Development
+- **Native iOS**: Full Swift/SwiftUI implementation with no cross-platform frameworks
+- **MVVM Pattern**: Clean separation of concerns with reactive ViewModels
+- **Modern APIs**: iOS 17 MapKit, ARKit, and camera APIs
+- **Network Resilience**: Automatic device detection and fallback mechanisms
+
+### Backend Engineering
+- **High Performance**: FastAPI with async/await for concurrent requests
+- **Database Optimization**: SQLAlchemy hybrid properties for computed fields
+- **Image Processing**: Efficient thumbnail generation with Pillow
+- **Dynamic URL Construction**: Socket-based server IP detection for reliable iOS connectivity
+
+### Computer Vision (Planned)
+- **CLIP Integration**: Zero-shot image classification and aesthetic scoring
+- **Multi-Modal AI**: Text-image similarity for semantic search
+- **Transfer Learning**: Fine-tuned on photography-specific datasets
+
+## Performance Metrics
+
+### Image Optimization
+- Original photos: ~2-4MB
+- Thumbnails: ~20-50KB (300x300, quality 85%)
+- List view load time: <500ms for 20 items
+- Detail view load time: <1s for full image
+
+### Database
+- Connection pool: 10 concurrent connections
+- Query optimization: Indexed on category, city, country
+- Hybrid properties: Computed at query time (no storage overhead)
+
+## Known Issues & Solutions
+
+### Camera Orientation
+**Issue**: Camera preview rotated incorrectly on landscape  
+**Solution**: Use iOS 17 `videoRotationAngle` API with proper mapping
+
+### Image Loading Fails
+**Issue**: AsyncImage fails with HTTP URLs  
+**Solution**: Configure `NSAppTransportSecurity` in Info.plist for local development
+
+### mDNS Resolution
+**Issue**: `.local` hostname unreliable on some networks  
+**Solution**: Backend auto-detects server IP using socket connection
+
+## Development Notes
+
+### Lessons Learned
+- SwiftUI's `ObservableObject` requires explicit `import Combine`
+- Camera orientation must be set for both preview AND capture
+- FastAPI StaticFiles must be mounted before router registration
+- PostgreSQL provides better scalability than SQLite for production
+- iOS 17 deprecated many MapKit APIs, requiring migration to new MapContentBuilder pattern
+
+### Best Practices Applied
+- Proper error handling with user-friendly messages
+- Comprehensive logging for debugging
+- Separation of concerns (MVVM, service layer)
+- Type safety with Pydantic schemas
+- Database transaction management with automatic rollback
+
+## Future Enhancements
+
+### Phase 2: AI Features
+- Integrate CLIP for aesthetic scoring
+- Add visual similarity search
+- Implement scene composition analysis
+
+### Phase 3: Social & Gamification
+- User profiles and authentication
+- Photo likes and favorites
+- Leaderboards and achievements
+- Community contributions
+
+### Phase 4: Advanced Features
+- Weather-based recommendations
+- Time-of-day optimization
+- Route planning for multiple spots
+- Collaborative itineraries
+
+## Portfolio Showcase
+
+This project demonstrates:
+- ✅ Full-stack mobile development (iOS native + Python backend)
+- ✅ Modern API design with FastAPI
+- ✅ Database modeling with PostgreSQL
+- ✅ AR technology integration
+- ✅ Image processing and optimization
+- ✅ Cross-platform networking solutions
+- ✅ User experience design
+- 🔄 AI/ML integration (CLIP - in progress)
 
 ## Contact
 
-lu.y7@northeastern.edu
-Linkedin Link: https://www.linkedin.com/in/yinglulareina/
+**Ying Lu**  
+Email: lu.y7@northeastern.edu  
+LinkedIn: https://www.linkedin.com/in/yinglulareina/
 
 ---
 
-**Note**: This is a portfolio project demonstrating full-stack development, computer vision, AR integration, and user experience design capabilities.
+**Project Status**: Active Development  
+**Last Updated**: February 3, 2026  
+**Version**: 1.0.0

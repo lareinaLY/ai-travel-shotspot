@@ -50,8 +50,8 @@ struct SpotDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: ARNavigationView(spot: spot)) {
                     HStack {
-                        Image(systemName: "arkit")
-                        Text("AR Navigate")
+                        Image(systemName: "location.fill")
+                        Text("Navigate")
                     }
                     .foregroundColor(.blue)
                 }
@@ -64,6 +64,16 @@ struct SpotDetailView: View {
     // MARK: - View Components
     
     private var heroImageSection: some View {
+        Group {
+            if let imageUrl = spot.imageUrl {
+                NetworkImage(url: imageUrl)
+            } else {
+                placeholderImage
+            }
+        }
+    }
+
+    private var placeholderImage: some View {
         RoundedRectangle(cornerRadius: 16)
             .fill(
                 LinearGradient(
@@ -78,7 +88,7 @@ struct SpotDetailView: View {
                     Image(systemName: "camera.fill")
                         .font(.system(size: 60))
                         .foregroundColor(.white.opacity(0.8))
-                    Text("Photo will load here")
+                    Text("No image")
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.6))
                 }

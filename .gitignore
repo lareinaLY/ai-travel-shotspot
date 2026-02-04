@@ -48,7 +48,7 @@ htmlcov/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Model files and large data (will add in Phase 3)
+# Model files and large data
 models/*.pth
 models/*.h5
 models/*.pkl
@@ -57,6 +57,12 @@ data/raw/
 *.csv
 *.zip
 *.tar.gz
+
+# Uploaded photos and thumbnails - DO NOT COMMIT
+backend/uploads/photos/*
+backend/uploads/thumbnails/*
+!backend/uploads/photos/.gitkeep
+!backend/uploads/thumbnails/.gitkeep
 
 # OS
 .DS_Store
@@ -70,23 +76,16 @@ temp/
 tmp/
 
 # Docker
-*.log
 docker-compose.override.yml
 
-# Frontend (will be added in Phase 5)
+# Frontend
 node_modules/
 .next/
 out/
 .cache/
 .parcel-cache/
 
-# Keep important folders
-!backend/.gitkeep
-!frontend/.gitkeep
-!data/.gitkeep
-!models/.gitkeep
-
-# Xcode User Settings (should not be committed)
+# Xcode User Settings
 xcuserdata/
 *.xcuserstate
 *.xcuserdatad
@@ -105,3 +104,8 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+
+# iOS specific
+*.ipa
+*.dSYM.zip
+*.dSYM
