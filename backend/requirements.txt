@@ -15,6 +15,17 @@ pydantic-settings==2.1.0
 # Environment variables
 python-dotenv==1.0.0
 
+# Image processing
+Pillow==10.1.0
+
+# AI/ML for aesthetic scoring
+torch==2.1.0
+torchvision==0.16.0
+ftfy==6.1.3
+regex==2023.10.3
+tqdm==4.66.1
+git+https://github.com/openai/CLIP.git
+
 # Testing
 pytest==7.4.3
 pytest-asyncio==0.21.1

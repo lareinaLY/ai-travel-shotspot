@@ -16,8 +16,11 @@ from datetime import datetime
 from app.database import get_db
 from app.models.photo_spot import PhotoSpot
 from app.schemas.photo_spot import PhotoSpotResponse
+from app.services.aesthetic_scorer import calculate_aesthetic_score
+import logging
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 # Upload directory
 UPLOAD_DIR = "uploads/photos"
@@ -214,6 +217,17 @@ async def upload_photo_spot(
     
     final_equipment = equipment_needed if equipment_needed else equipment_from_exif
     tag_list = [tag.strip() for tag in tags.split(",")] if tags else []
+
+    # Calculate aesthetic score
+    logger.info("Calculating aesthetic score...")
+    try:
+        aesthetic_score, score_breakdown = calculate_aesthetic_score(file_path, category)
+        logger.info(f"CLIP aesthetic score: {aesthetic_score:.2f}")
+        logger.info(f"Score breakdown: {score_breakdown}")
+    except Exception as e:
+        logger.warning(f"CLIP scoring failed, using default: {e}")
+        aesthetic_score = 70.0
+        score_breakdown = {"error": str(e)}
     
     # Construct URLs
     host = request.headers.get("host")
@@ -247,7 +261,7 @@ async def upload_photo_spot(
         category=category.lower(),
         image_url=image_url,
         thumbnail_url=thumbnail_url,
-        aesthetic_score=70.0,
+        aesthetic_score=aesthetic_score,  # Use CLIP score instead of 70.0
         popularity_score=50.0,
         difficulty_level=difficulty_level.lower(),
         best_time=best_time,
